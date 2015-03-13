@@ -19,18 +19,27 @@ public class VeiculoController {
     @Autowired
     private EntityManager em;
 
-
+    @RequestMapping(method = RequestMethod.GET)
     public List<Veiculo> getVeiculos() {
-        return null;
+        Query consulta = em.createQuery("from Veiculo");
+        return consulta.getResultList();
+        
     }
-    
+    @RequestMapping(method = RequestMethod.POST)
     public void criarVeiculo(@RequestBody Veiculo veiculo) {
-    }        
+        em.persist(veiculo);
+    } 
     
+    @RequestMapping(method = RequestMethod.PUT)
     public void alterarVeiculo(@RequestBody Veiculo veiculo) {
+        em.merge(veiculo);
+        em.persist(veiculo);         
     }        
     
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void excluirVeiculo(@PathVariable Long id) {
+        Veiculo veiculo = em.find(Veiculo.class, id);
+        em.remove(veiculo);
     }        
     
 }
